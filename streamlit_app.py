@@ -5,7 +5,7 @@ import plotly.express as px
 
 @st.cache_resource
 def 종목목록가져오기():
-    return pd.read_csv('ticker.csv')
+    return pd.read_csv('ticker.csv').sort_values('TICKER')
 
 @st.cache_data
 def 환율가져오기() -> pd.Series:
@@ -29,7 +29,7 @@ def 종목분석가져오기(종목코드):
     지수이평선200 = 종목시세.ewm(200, min_periods=200)\
         .mean().dropna().astype(int).rename('EMA200')
     return pd.concat([종목시세, 단순이평선200, 지수이평선200],\
-                      axis=1, join='inner').tail(50)
+                      axis=1, join='inner').tail(200)
 
 def 종목필터링(진입=False, 편출=False):
     종목목록 = 종목목록가져오기().TICKER
@@ -75,6 +75,7 @@ if __name__ == '__main__':
         '☕ 종목 찾기', 종목목록,
         default=필터링종목목록,
         placeholder='체크할 종목 선택')
+    st.write(f'💪 종목 수 : {len(필터링종목목록)}개')
 
     # for 종목코드 in 선택된종목목록:
     for i in range((len(선택된종목목록) + 1) // 2):

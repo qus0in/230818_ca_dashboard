@@ -7,5 +7,5 @@ $ pip freeze > requirements.txt
 ```
 
 ```shell
-$ streamlit run streamlit_app.py
+$ python -m streamlit run streamlit_app.py 
 ```
